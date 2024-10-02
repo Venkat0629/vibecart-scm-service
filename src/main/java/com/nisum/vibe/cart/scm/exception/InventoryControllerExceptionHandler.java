@@ -1,10 +1,8 @@
-package com.nisum.vibe.cart.scm.exceptionhandler;
+package com.nisum.vibe.cart.scm.exception;
 
 
-import com.nisum.vibe.cart.scm.ResponseEntity.ApiResponse;
+import com.nisum.vibe.cart.scm.response.ApiResponse;
 import com.nisum.vibe.cart.scm.controller.InventoryController;
-import com.nisum.vibe.cart.scm.exception.InventoryNotFoundException;
-import com.nisum.vibe.cart.scm.exception.WarehouseNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

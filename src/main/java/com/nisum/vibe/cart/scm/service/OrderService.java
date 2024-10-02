@@ -2,7 +2,7 @@ package com.nisum.vibe.cart.scm.service;
 
 import com.nisum.vibe.cart.scm.exception.InventoryNotFoundException;
 import com.nisum.vibe.cart.scm.exception.WarehouseNotFoundException;
-import com.nisum.vibe.cart.scm.model.CustomerOrderItemDto;
+import com.nisum.vibe.cart.scm.model.CustomerOrderItemDTO;
 import com.nisum.vibe.cart.scm.model.OrderDTO;
 
 import java.util.List;
@@ -33,5 +33,5 @@ public interface OrderService {
 
     String trackOrderStatus(String orderId);
 
-    Map<Long, String> stockReservationCall(List<CustomerOrderItemDto> customerOrderItemDtos, Long customerZipcode) throws InventoryNotFoundException, WarehouseNotFoundException;
+    Map<Long, String> stockReservationCall(List<CustomerOrderItemDTO> customerOrderItemDTOS, Long customerZipcode) throws InventoryNotFoundException, WarehouseNotFoundException;
 }

@@ -1,4 +1,4 @@
-package com.nisum.vibe.cart.scm.ResponseEntity;
+package com.nisum.vibe.cart.scm.response;
 
 /**
  * Generic class for API response structure.

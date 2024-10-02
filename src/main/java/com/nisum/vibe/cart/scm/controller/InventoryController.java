@@ -1,7 +1,7 @@
 package com.nisum.vibe.cart.scm.controller;
 
 
-import com.nisum.vibe.cart.scm.ResponseEntity.ApiResponse;
+import com.nisum.vibe.cart.scm.response.ApiResponse;
 import com.nisum.vibe.cart.scm.exception.InventoryNotFoundException;
 import com.nisum.vibe.cart.scm.exception.WarehouseNotFoundException;
 import com.nisum.vibe.cart.scm.model.*;
@@ -20,23 +20,13 @@ import java.util.List;
  * Provides endpoints for checking, updating, and retrieving inventory details.
  */
 @RestController
-@RequestMapping("/vibe-cart/scm/inventory")
+@RequestMapping("/api/v1/vibe-cart/scm/inventory")
 public class InventoryController {
 
     @Autowired
     private InventoryService inventoryService;
 
     private final Logger LOGGER = LoggerFactory.getLogger(InventoryController.class);
-
-    /**
-     * Handles a request to provide a welcome message.
-     *
-     * @return a welcome message for the Inventory Service.
-     */
-    @GetMapping("/welcome")
-    public ResponseEntity<String> welcomeMessage(){
-        return ResponseEntity.ok("Welcome to Inventory Service of VibeCart");
-    }
 
     /**
      * Handles a request to check the quantity of SKUs in the inventory.

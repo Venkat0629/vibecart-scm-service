@@ -1,7 +1,6 @@
 package com.nisum.vibe.cart.scm.service;
 
 import com.nisum.vibe.cart.scm.exception.InventoryNotFoundException;
-import com.nisum.vibe.cart.scm.exception.OutOfStockException;
 import com.nisum.vibe.cart.scm.exception.WarehouseNotFoundException;
 import com.nisum.vibe.cart.scm.model.*;
 
@@ -20,7 +19,7 @@ import java.util.Map;
 public interface InventoryService {
     List<Integer> checkSkuQuantity(List<Long> skuList);
 
-    Map<Long, String> stockReservationCall(List<CustomerOrderItemDto> customerOrderItemDtos, Long customerZipcode)
+    Map<Long, String> stockReservationCall(List<CustomerOrderItemDTO> customerOrderItemDTOS, Long customerZipcode)
             throws WarehouseNotFoundException, InventoryNotFoundException;
 
     String getExpectedDeliveryDateWithSkuAndZipcode(Long sku, Long zipcode)
@@ -42,5 +41,5 @@ public interface InventoryService {
 
     List<InventoryLocationResponse> getAllWarehouses();
 
-    void revertStockIfOrderCancel(List<CustomerOrderItemDto> customerOrderItemDtos, Long customerZipcode) throws WarehouseNotFoundException, InventoryNotFoundException;
+    void revertStockIfOrderCancel(List<CustomerOrderItemDTO> customerOrderItemDTOS, Long customerZipcode) throws WarehouseNotFoundException, InventoryNotFoundException;
 }

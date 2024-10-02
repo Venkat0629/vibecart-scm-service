@@ -6,7 +6,7 @@ package com.nisum.vibe.cart.scm.model;
  * Contains fields for SKU (stock keeping unit) and the quantity ordered.
  * </p>
  */
-public class CustomerOrderItemDto {
+public class CustomerOrderItemDTO {
 
     private Long sku;
     private Integer orderQuantity;
@@ -14,7 +14,7 @@ public class CustomerOrderItemDto {
     /**
      * Default constructor for {@code CustomerOrderItemDto}.
      */
-    public CustomerOrderItemDto() {
+    public CustomerOrderItemDTO() {
     }
 
     /**
@@ -23,7 +23,7 @@ public class CustomerOrderItemDto {
      * @param sku the stock keeping unit of the item.
      * @param orderQuantity the quantity of the item ordered.
      */
-    public CustomerOrderItemDto(Long sku, Integer orderQuantity) {
+    public CustomerOrderItemDTO(Long sku, Integer orderQuantity) {
         this.sku = sku;
         this.orderQuantity = orderQuantity;
     }

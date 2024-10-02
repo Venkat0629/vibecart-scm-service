@@ -1,7 +1,7 @@
 package com.nisum.vibe.cart.scm.service;
 
-import com.nisum.vibe.cart.scm.entity.Inventory;
-import com.nisum.vibe.cart.scm.entity.Warehouse;
+import com.nisum.vibe.cart.scm.dao.Inventory;
+import com.nisum.vibe.cart.scm.dao.Warehouse;
 import com.nisum.vibe.cart.scm.exception.InventoryNotFoundException;
 import com.nisum.vibe.cart.scm.exception.WarehouseNotFoundException;
 import com.nisum.vibe.cart.scm.model.*;
@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  * </p>
  */
 @Service
-public class InventoryServiceImpl implements InventoryService{
+public class InventoryServiceImpl implements InventoryService {
 
     @Autowired
     private InventoryRepository inventoryRepository;
@@ -65,7 +65,7 @@ public class InventoryServiceImpl implements InventoryService{
 
         List<Integer> totalQuantityList = new ArrayList<>();
 
-        for(Long sku: skuList){
+        for (Long sku : skuList) {
             List<Inventory> inventoryList = inventoryRepository.findBySku(sku);
             Integer totalQuantity = inventoryList.stream().mapToInt(Inventory::getQuantityAvailable).sum();
             totalQuantityList.add(totalQuantity);
@@ -85,21 +85,20 @@ public class InventoryServiceImpl implements InventoryService{
      * across other warehouses.
      * </p>
      *
-     * @param customerOrderItemDtos a list of ordered items including SKU and quantity.
-     * @param customerZipcode the customer's delivery zipcode used to find the nearest warehouse.
+     * @param customerOrderItemDTOS a list of ordered items including SKU and quantity.
+     * @param customerZipcode       the customer's delivery zipcode used to find the nearest warehouse.
      * @throws WarehouseNotFoundException if no warehouse is found for the given zipcode.
      * @throws InventoryNotFoundException if no inventory is found for the SKU in any warehouse.
      */
     @Override
     @Transactional
-    public Map<Long, String> stockReservationCall(List<CustomerOrderItemDto> customerOrderItemDtos, Long customerZipcode)
-            throws WarehouseNotFoundException, InventoryNotFoundException {
+    public Map<Long, String> stockReservationCall(List<CustomerOrderItemDTO> customerOrderItemDTOS, Long customerZipcode) throws WarehouseNotFoundException, InventoryNotFoundException {
 
         LOGGER.info("Inside updateInventory() method of InventoryServiceImpl class");
 
         Map<Long, String> responseMap = new HashMap<>();
 
-        for (CustomerOrderItemDto customerOrderItemDto : customerOrderItemDtos) {
+        for (CustomerOrderItemDTO customerOrderItemDto : customerOrderItemDTOS) {
             Long sku = customerOrderItemDto.getSku();
             Integer orderQuantity = customerOrderItemDto.getOrderQuantity();
 
@@ -130,7 +129,7 @@ public class InventoryServiceImpl implements InventoryService{
                     List<Inventory> inventoryList = inventoryRepository.findBySku(sku);
                     int totalQuantityInAllInventories = inventoryList.stream().mapToInt(Inventory::getQuantityAvailable).sum();
 
-                    if(totalQuantityInAllInventories >= orderQuantity) {
+                    if (totalQuantityInAllInventories >= orderQuantity) {
 
                         int remainingQuantity = orderQuantity;
                         int quantityAvailable = nearestInventory.getQuantityAvailable();
@@ -166,7 +165,7 @@ public class InventoryServiceImpl implements InventoryService{
 
                             inventoryRepository.save(inventory);
                         }
-                    }else{
+                    } else {
                         responseMap.put(sku, "Not enough stock to fulfill the order for SKU: " + sku);
                     }
                 }
@@ -174,7 +173,7 @@ public class InventoryServiceImpl implements InventoryService{
             } else {
                 throw new WarehouseNotFoundException("No Warehouse found for the zipcode: " + customerZipcode);
             }
-            if(!responseMap.containsKey(sku)) {
+            if (!responseMap.containsKey(sku)) {
                 responseMap.put(sku, "Inventory updated with stock reservation");
             }
         }
@@ -190,7 +189,7 @@ public class InventoryServiceImpl implements InventoryService{
      * If not, the method checks other warehouses and assumes a 5-day delivery time if stock is found elsewhere.
      * </p>
      *
-     * @param sku the SKU identifier for the product.
+     * @param sku     the SKU identifier for the product.
      * @param zipcode the customer's delivery zipcode.
      * @return a string representing the expected delivery date in YYYY-MM-DD format.
      * @throws InventoryNotFoundException if no stock is available for the SKU in any warehouse.
@@ -262,15 +261,14 @@ public class InventoryServiceImpl implements InventoryService{
 
         List<WarehouseStockDto> warehouseStockDtoList = new ArrayList<>();
 
-        for(Warehouse warehouse: warehouses){
+        for (Warehouse warehouse : warehouses) {
             List<Inventory> inventories = inventoryRepository.findByWarehouseId(warehouse.getWarehouseId());
 
             Integer availableQuantity = inventories.stream().mapToInt(Inventory::getQuantityAvailable).sum();
             Integer reservedQuantity = inventories.stream().mapToInt(Inventory::getQuantityOnHold).sum();
             Integer totalQuantity = availableQuantity + reservedQuantity;
 
-            WarehouseStockDto warehouseStockDto = new WarehouseStockDto(warehouse.getWarehouseId(), availableQuantity,
-                    reservedQuantity, totalQuantity);
+            WarehouseStockDto warehouseStockDto = new WarehouseStockDto(warehouse.getWarehouseId(), availableQuantity, reservedQuantity, totalQuantity);
 
             warehouseStockDtoList.add(warehouseStockDto);
         }
@@ -314,7 +312,7 @@ public class InventoryServiceImpl implements InventoryService{
 
         LOGGER.info("Inside addStockToMultipleInventories() method of InventoryServiceImpl class");
 
-        for(SkuQuantityWarehouseDto skuQuantityWarehouseDto: skuQuantityWarehouseDtos){
+        for (SkuQuantityWarehouseDto skuQuantityWarehouseDto : skuQuantityWarehouseDtos) {
             Long sku = skuQuantityWarehouseDto.getSku();
             Integer quantityToAdd = skuQuantityWarehouseDto.getQuantityToAdd();
             String warehouseId = skuQuantityWarehouseDto.getWarehouseId();
@@ -347,8 +345,7 @@ public class InventoryServiceImpl implements InventoryService{
         List<Inventory> inventoryList = inventoryRepository.findAll();
 
         // Group inventories by SKU
-        Map<Long, List<Inventory>> inventoriesBySku = inventoryList.stream()
-                .collect(Collectors.groupingBy(Inventory::getSku));
+        Map<Long, List<Inventory>> inventoriesBySku = inventoryList.stream().collect(Collectors.groupingBy(Inventory::getSku));
 
         List<InventoryConsoleResponse> consoleResponses = new ArrayList<>();
 
@@ -378,7 +375,7 @@ public class InventoryServiceImpl implements InventoryService{
 
         List<Inventory> inventories = inventoryRepository.findByItemId(itemId);
 
-        if(inventories.isEmpty()){
+        if (inventories.isEmpty()) {
             throw new InventoryNotFoundException("No inventory found for item id: " + itemId);
         }
 
@@ -398,7 +395,7 @@ public class InventoryServiceImpl implements InventoryService{
 
         List<Inventory> inventories = inventoryRepository.findBySku(sku);
 
-        if(inventories.isEmpty()){
+        if (inventories.isEmpty()) {
             throw new InventoryNotFoundException("No inventory found for sku: " + sku);
         }
 
@@ -456,8 +453,7 @@ public class InventoryServiceImpl implements InventoryService{
             Integer reservedQuantity = inventory.getQuantityOnHold();
             Integer totalQuantity = availableQuantity + reservedQuantity;
 
-            InventoryLocationResponse response = new InventoryLocationResponse(warehouse.getWarehouseId(),
-                    sku, availableQuantity, reservedQuantity, totalQuantity);
+            InventoryLocationResponse response = new InventoryLocationResponse(warehouse.getWarehouseId(), sku, availableQuantity, reservedQuantity, totalQuantity);
             responseList.add(response);
         }
 
@@ -469,17 +465,17 @@ public class InventoryServiceImpl implements InventoryService{
      * customer's zipcode. If sufficient stock is not available in the nearest warehouse or the SKU is not found,
      * it reverts stock from other warehouses. Throws an exception if the stock cannot be fully reverted.
      *
-     * @param customerOrderItemDtos List of items ordered by the customer.
-     * @param customerZipcode The zipcode of the customer to find the nearest warehouse.
+     * @param customerOrderItemDTOS List of items ordered by the customer.
+     * @param customerZipcode       The zipcode of the customer to find the nearest warehouse.
      * @throws InventoryNotFoundException if enough reserved stock is not available for the specified SKU.
      * @throws WarehouseNotFoundException if no warehouse is found for the provided zipcode.
      */
     @Transactional
     @Override
-    public void revertStockIfOrderCancel(List<CustomerOrderItemDto> customerOrderItemDtos, Long customerZipcode) throws WarehouseNotFoundException, InventoryNotFoundException {
+    public void revertStockIfOrderCancel(List<CustomerOrderItemDTO> customerOrderItemDTOS, Long customerZipcode) throws WarehouseNotFoundException, InventoryNotFoundException {
         LOGGER.info("Inside revertStockReservation() method of InventoryServiceImpl class");
 
-        for (CustomerOrderItemDto customerOrderItemDto : customerOrderItemDtos) {
+        for (CustomerOrderItemDTO customerOrderItemDto : customerOrderItemDTOS) {
             Long sku = customerOrderItemDto.getSku();
             Integer orderQuantity = customerOrderItemDto.getOrderQuantity();
 

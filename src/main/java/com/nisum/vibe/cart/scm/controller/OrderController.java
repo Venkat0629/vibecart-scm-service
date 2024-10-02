@@ -1,8 +1,8 @@
 package com.nisum.vibe.cart.scm.controller;
 
-import com.nisum.vibe.cart.scm.ResponseEntity.ApiResponse;
+import com.nisum.vibe.cart.scm.response.ApiResponse;
 import com.nisum.vibe.cart.scm.exception.*;
-import com.nisum.vibe.cart.scm.model.CustomerOrderItemDto;
+import com.nisum.vibe.cart.scm.model.CustomerOrderItemDTO;
 import com.nisum.vibe.cart.scm.model.OrderDTO;
 import com.nisum.vibe.cart.scm.service.OrderService;
 import org.slf4j.Logger;
@@ -19,8 +19,7 @@ import java.util.Map;
  * Provides endpoints to handle CRUD operations and additional functionalities related to orders.
  */
 @RestController
-@CrossOrigin
-@RequestMapping("/vibe-cart/scm/orders")
+@RequestMapping("/api/v1/vibe-cart/scm/orders")
 public class OrderController {
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
     private final OrderService orderService;
@@ -243,14 +242,14 @@ public class OrderController {
      * Makes a stock reservation call for the given list of customer order items.
      * This method checks inventory availability and reserves stock based on the provided customer ZIP code.
      *
-     * @param customerOrderItemDtos List of customer order item details for which stock needs to be reserved.
+     * @param customerOrderItemDTOS List of customer order item details for which stock needs to be reserved.
      * @param customerZipcode       The ZIP code of the customer to determine the warehouse for stock reservation.
      * @return ResponseEntity containing an ApiResponse with a map of item IDs and their reservation status.
      */
     @PutMapping("/stock-reservation-call")
-    public ResponseEntity<ApiResponse<Map<Long, String>>> stockReservationCall(@RequestBody List<CustomerOrderItemDto> customerOrderItemDtos, @RequestParam("customerZipcode") Long customerZipcode) throws InventoryNotFoundException, WarehouseNotFoundException {
+    public ResponseEntity<ApiResponse<Map<Long, String>>> stockReservationCall(@RequestBody List<CustomerOrderItemDTO> customerOrderItemDTOS, @RequestParam("customerZipcode") Long customerZipcode) throws InventoryNotFoundException, WarehouseNotFoundException {
 
-        Map<Long, String> responseMap = orderService.stockReservationCall(customerOrderItemDtos, customerZipcode);
+        Map<Long, String> responseMap = orderService.stockReservationCall(customerOrderItemDTOS, customerZipcode);
         ApiResponse<Map<Long, String>> response = new ApiResponse<>(true, HttpStatus.OK.value(), "Stock Reservation call made", responseMap);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

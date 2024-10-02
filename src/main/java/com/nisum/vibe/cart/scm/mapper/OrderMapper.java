@@ -1,8 +1,8 @@
 package com.nisum.vibe.cart.scm.mapper;
 
-import com.nisum.vibe.cart.scm.entity.Address;
-import com.nisum.vibe.cart.scm.entity.Customer;
-import com.nisum.vibe.cart.scm.entity.Order;
+import com.nisum.vibe.cart.scm.dao.Address;
+import com.nisum.vibe.cart.scm.dao.Customer;
+import com.nisum.vibe.cart.scm.dao.Order;
 import com.nisum.vibe.cart.scm.exception.OrderConversionException;
 import com.nisum.vibe.cart.scm.exception.OrderNotFoundException;
 import com.nisum.vibe.cart.scm.model.AddressDTO;

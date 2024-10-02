@@ -1,5 +1,5 @@
 package com.nisum.vibe.cart.scm.DTO;
-import com.nisum.vibe.cart.scm.entity.OrderItem;
+import com.nisum.vibe.cart.scm.dao.OrderItem;
 import com.nisum.vibe.cart.scm.exception.InvalidOrderIdException;
 import com.nisum.vibe.cart.scm.model.*;
 import org.junit.jupiter.api.BeforeEach;

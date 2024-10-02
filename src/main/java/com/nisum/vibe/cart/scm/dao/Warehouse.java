@@ -1,4 +1,4 @@
-package com.nisum.vibe.cart.scm.entity;
+package com.nisum.vibe.cart.scm.dao;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

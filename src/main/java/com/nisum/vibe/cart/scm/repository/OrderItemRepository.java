@@ -1,6 +1,6 @@
 package com.nisum.vibe.cart.scm.repository;
 
-import com.nisum.vibe.cart.scm.entity.OrderItem;
+import com.nisum.vibe.cart.scm.dao.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

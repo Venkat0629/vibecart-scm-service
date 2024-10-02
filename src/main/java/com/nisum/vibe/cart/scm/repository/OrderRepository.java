@@ -1,12 +1,11 @@
 package com.nisum.vibe.cart.scm.repository;
 
-import com.nisum.vibe.cart.scm.entity.Order;
+import com.nisum.vibe.cart.scm.dao.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 

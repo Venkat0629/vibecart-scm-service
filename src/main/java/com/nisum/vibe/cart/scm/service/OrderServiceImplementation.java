@@ -1,22 +1,19 @@
 package com.nisum.vibe.cart.scm.service;
 
 import com.nisum.vibe.cart.scm.Validation.OrderValidator;
-import com.nisum.vibe.cart.scm.entity.Address;
-import com.nisum.vibe.cart.scm.entity.Order;
-import com.nisum.vibe.cart.scm.entity.OrderItem;
+import com.nisum.vibe.cart.scm.dao.Address;
+import com.nisum.vibe.cart.scm.dao.Order;
+import com.nisum.vibe.cart.scm.dao.OrderItem;
 import com.nisum.vibe.cart.scm.exception.*;
 import com.nisum.vibe.cart.scm.mapper.OrderItemMapper;
 import com.nisum.vibe.cart.scm.mapper.OrderMapper;
-import com.nisum.vibe.cart.scm.model.OrderDTO;
-import com.nisum.vibe.cart.scm.model.OrderStatus;
-import com.nisum.vibe.cart.scm.model.PaymentStatus;
 import com.nisum.vibe.cart.scm.model.*;
 import com.nisum.vibe.cart.scm.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +45,8 @@ public class OrderServiceImplementation implements OrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderServiceImplementation.class);
 
-    private final String OFFER_SERVICE_URL = "http://10.3.45.15:4001/api/v1/vibe-cart/offers/usage/";
+    @Value("${ofms.service.api.url}")
+    private String OFFER_SERVICE_URL;
 
     private OrderRepository orderRepository;
     private OrderMapper orderMapper;
@@ -355,11 +353,11 @@ public class OrderServiceImplementation implements OrderService {
                 existingOrder.setUpdatedDate(Instant.now());
                 orderRepository.save(existingOrder);
 
-                List<CustomerOrderItemDto> customerOrderItemDtos = existingOrder.getOrderItems().stream().map(orderItem -> new CustomerOrderItemDto(orderItem.getSkuId(), orderItem.getQuantity())).collect(Collectors.toList());
+                List<CustomerOrderItemDTO> customerOrderItemDTOS = existingOrder.getOrderItems().stream().map(orderItem -> new CustomerOrderItemDTO(orderItem.getSkuId(), orderItem.getQuantity())).collect(Collectors.toList());
 
                 Long customerZipcode = existingOrder.getShippingzipCode();
 
-                inventoryService.revertStockIfOrderCancel(customerOrderItemDtos, customerZipcode);
+                inventoryService.revertStockIfOrderCancel(customerOrderItemDTOS, customerZipcode);
 
                 String successMessage = "Order with ID " + orderId + " cancelled successfully.";
                 logger.info(successMessage);
@@ -486,14 +484,14 @@ public class OrderServiceImplementation implements OrderService {
      * Reserves stock for a list of customer order items based on the customer's ZIP code.
      * Delegates the stock reservation logic to the inventory service.
      *
-     * @param customerOrderItemDtos List of customer order items to reserve.
+     * @param customerOrderItemDTOS List of customer order items to reserve.
      * @param customerZipcode       The customer's ZIP code used to find the appropriate warehouse.
      * @return A map containing item IDs and their reservation status.
      */
     @Override
-    public Map<Long, String> stockReservationCall(List<CustomerOrderItemDto> customerOrderItemDtos, Long customerZipcode) throws InventoryNotFoundException, WarehouseNotFoundException {
+    public Map<Long, String> stockReservationCall(List<CustomerOrderItemDTO> customerOrderItemDTOS, Long customerZipcode) throws InventoryNotFoundException, WarehouseNotFoundException {
 
-        return inventoryService.stockReservationCall(customerOrderItemDtos, customerZipcode);
+        return inventoryService.stockReservationCall(customerOrderItemDTOS, customerZipcode);
     }
 
     public void updateOfferUsage(Order order) {

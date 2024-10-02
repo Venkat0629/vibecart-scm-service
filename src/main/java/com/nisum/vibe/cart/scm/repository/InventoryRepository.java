@@ -1,7 +1,7 @@
 package com.nisum.vibe.cart.scm.repository;
 
-import com.nisum.vibe.cart.scm.entity.Inventory;
-import com.nisum.vibe.cart.scm.entity.Warehouse;
+import com.nisum.vibe.cart.scm.dao.Inventory;
+import com.nisum.vibe.cart.scm.dao.Warehouse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

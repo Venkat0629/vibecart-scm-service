@@ -1,7 +1,7 @@
 package com.nisum.vibe.cart.scm.service;
 
-import com.nisum.vibe.cart.scm.entity.Inventory;
-import com.nisum.vibe.cart.scm.entity.Warehouse;
+import com.nisum.vibe.cart.scm.dao.Inventory;
+import com.nisum.vibe.cart.scm.dao.Warehouse;
 import com.nisum.vibe.cart.scm.exception.InventoryNotFoundException;
 import com.nisum.vibe.cart.scm.exception.WarehouseNotFoundException;
 import com.nisum.vibe.cart.scm.model.*;
@@ -95,8 +95,8 @@ class InventoryServiceImplTest {
         Long sku = 1276L;
         Integer orderQuantity = 15;
 
-        CustomerOrderItemDto customerOrderItemDto = new CustomerOrderItemDto(sku, orderQuantity);
-        List<CustomerOrderItemDto> customerOrderItemDtos = Collections.singletonList(customerOrderItemDto);
+        CustomerOrderItemDTO customerOrderItemDto = new CustomerOrderItemDTO(sku, orderQuantity);
+        List<CustomerOrderItemDTO> customerOrderItemDTOS = Collections.singletonList(customerOrderItemDto);
 
         Warehouse warehouse = new Warehouse("INV0001", "Mumbai Warehouse", "Mumbai", 400001L, 400706L);
         Inventory inventory = new Inventory(1L, 301L, sku, 45, warehouse, 0, 0, null);
@@ -104,7 +104,7 @@ class InventoryServiceImplTest {
         when(warehouseRepository.findWarehouseByZipcode(customerZipcode)).thenReturn(Optional.of(warehouse));
         when(inventoryRepository.findBySkuAndWarehouse(sku, warehouse)).thenReturn(Optional.of(inventory));
 
-        Map<Long, String> result = inventoryServiceImpl.stockReservationCall(customerOrderItemDtos, customerZipcode);
+        Map<Long, String> result = inventoryServiceImpl.stockReservationCall(customerOrderItemDTOS, customerZipcode);
 
         assertEquals(1, result.size());
         verify(inventoryRepository).save(inventory);
@@ -119,13 +119,13 @@ class InventoryServiceImplTest {
         Long sku = 1001L;
         Integer orderQuantity = 10;
 
-        CustomerOrderItemDto customerOrderItemDto = new CustomerOrderItemDto(sku, orderQuantity);
-        List<CustomerOrderItemDto> customerOrderItemDtos = Collections.singletonList(customerOrderItemDto);
+        CustomerOrderItemDTO customerOrderItemDto = new CustomerOrderItemDTO(sku, orderQuantity);
+        List<CustomerOrderItemDTO> customerOrderItemDTOS = Collections.singletonList(customerOrderItemDto);
 
         when(warehouseRepository.findWarehouseByZipcode(customerZipcode)).thenReturn(Optional.empty());
 
         WarehouseNotFoundException exception = assertThrows(WarehouseNotFoundException.class, () -> {
-            inventoryServiceImpl.stockReservationCall(customerOrderItemDtos, customerZipcode);
+            inventoryServiceImpl.stockReservationCall(customerOrderItemDTOS, customerZipcode);
         });
 
         verify(warehouseRepository).findWarehouseByZipcode(customerZipcode);

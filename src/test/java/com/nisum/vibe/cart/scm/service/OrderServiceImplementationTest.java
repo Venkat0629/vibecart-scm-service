@@ -1,9 +1,9 @@
 package com.nisum.vibe.cart.scm.service;
 
-import com.nisum.vibe.cart.scm.entity.Address;
-import com.nisum.vibe.cart.scm.entity.Customer;
-import com.nisum.vibe.cart.scm.entity.Order;
-import com.nisum.vibe.cart.scm.entity.OrderItem;
+import com.nisum.vibe.cart.scm.dao.Address;
+import com.nisum.vibe.cart.scm.dao.Customer;
+import com.nisum.vibe.cart.scm.dao.Order;
+import com.nisum.vibe.cart.scm.dao.OrderItem;
 import com.nisum.vibe.cart.scm.exception.*;
 import com.nisum.vibe.cart.scm.mapper.OrderMapper;
 import com.nisum.vibe.cart.scm.model.*;

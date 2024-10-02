@@ -1,6 +1,6 @@
 package com.nisum.vibe.cart.scm.controller;
 
-import com.nisum.vibe.cart.scm.ResponseEntity.ApiResponse;
+import com.nisum.vibe.cart.scm.response.ApiResponse;
 import com.nisum.vibe.cart.scm.exception.InventoryNotFoundException;
 import com.nisum.vibe.cart.scm.exception.OrderNotFoundException;
 import com.nisum.vibe.cart.scm.exception.WarehouseNotFoundException;

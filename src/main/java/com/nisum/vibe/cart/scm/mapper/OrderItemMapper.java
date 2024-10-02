@@ -1,7 +1,7 @@
 package com.nisum.vibe.cart.scm.mapper;
 
 
-import com.nisum.vibe.cart.scm.entity.OrderItem;
+import com.nisum.vibe.cart.scm.dao.OrderItem;
 import com.nisum.vibe.cart.scm.exception.OrderItemConversionException;
 import com.nisum.vibe.cart.scm.exception.OrderNotFoundException;
 import com.nisum.vibe.cart.scm.model.OrderItemDTO;

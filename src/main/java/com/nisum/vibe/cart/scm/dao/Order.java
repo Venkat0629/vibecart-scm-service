@@ -1,4 +1,4 @@
-package com.nisum.vibe.cart.scm.entity;
+package com.nisum.vibe.cart.scm.dao;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nisum.vibe.cart.scm.model.OrderStatus;
